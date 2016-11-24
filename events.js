@@ -1,6 +1,5 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
 var listPlayers = [];
 var Socket;
@@ -9,13 +8,15 @@ var setSocket = function(socket1){
   socket = socket1;
 }
 
+//******** EVENTS ***************/
 var onDisconnect = function(){
   console.log("Player disconnect");
 }
 
-var onRegisterPlayer = function(data){
+var onRegisterPlayer = function(data,callback){
   console.log('Player connected: '+data);
   listPlayers.push("player_"+data);
+  callback('OK');
   socket.emit('player_registered', data);
 }
 
@@ -25,9 +26,18 @@ var onStartGame = function(data) {
   socket.broadcast.emit('start_game_players', data);
 }
 
+var onReduceTimePLayers = function(data){
+  console.log("ReduceTimeFrom: "+data);
+  socket.broadcast.emit("reduce_time_players",data.player,data.time);
+}
+
+//************END EVENTS***********//
+
+
 module.exports = {
   setSocket,
   onDisconnect,
   onRegisterPlayer,
-  onStartGame
+  onStartGame,
+  onReduceTimePLayers
 }

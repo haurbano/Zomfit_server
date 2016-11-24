@@ -6,10 +6,13 @@ var io = require('socket.io')(http);
 var events = require('./events.js')
 
 
-app.use(express.static(__dirname+"/static"));
+app.set('views', __dirname + '/static/views');
+app.set('view engine', 'jade');
+app.use(express.static(__dirname + '/static'))
+
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/web/index.html');
+    res.render('index',{pageTitle:"Tesis :D"});
 });
 
 var socketPage = true;
@@ -20,8 +23,6 @@ io.on('connection', function(socket){
     socketPage = false;
   }
   console.log('Socket connected');
-  io.emit('hi', 'everyone');
-
 
   socket.on('disconnect',events.onDisconnect);
   socket.on('register_player',events.onRegisterPlayer);
