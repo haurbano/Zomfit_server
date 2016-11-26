@@ -27,6 +27,7 @@ io.on('connection', function(socket){
   socket.on('disconnect',events.onDisconnect);
   socket.on('register_player',events.onRegisterPlayer);
   socket.on('start_game', events.onStartGame);
+  socket.on('onReduceTimePLayers',events.onReduceTimePLayers);
 
 });
 

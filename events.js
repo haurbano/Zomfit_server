@@ -28,8 +28,10 @@ var onStartGame = function(data) {
 
 var onReduceTimePLayers = function(data){
   console.log("ReduceTimeFrom: "+data);
-  socket.broadcast.emit("reduce_time_players",data.player,data.time);
+  socket.broadcast.emit("reduce_time_players",data);
 }
+
+
 
 //************END EVENTS***********//
 
