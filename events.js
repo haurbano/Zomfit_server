@@ -1,43 +1,42 @@
-var app = require('express')();
-var http = require('http').Server(app);
-
 var listPlayers = [];
-var Socket;
+var listIds = [];
 
-var setSocket = function(socket1){
-  socket = socket1;
-}
 
-//******** EVENTS ***************/
-var onDisconnect = function(){
-  console.log("Player disconnect");
-}
+var socketManager = function(socket){
 
-var onRegisterPlayer = function(data,callback){
-  console.log('Player connected: '+data);
-  listPlayers.push("player_"+data);
-  callback('OK');
-  socket.emit('player_registered', data);
-}
+    listIds.push(socket.id);
+    console.log(listIds);
 
-var onStartGame = function(data) {
-  console.log('Game Started');
-  //io.sockets.emit('start_game_players', "Juego inciado");
-  socket.broadcast.emit('start_game_players', data);
-}
+    console.log('Socket connected');
+    socket.on('disconnect',onDisconnect);
+    socket.on('register_player',onRegisterPlayer);
+    socket.on('start_game', onStartGame);
 
-var onReduceTimePLayers = function(data){
-  console.log("ReduceTimeFrom: "+data);
-  socket.broadcast.emit("reduce_time_players",data.player,data.time);
-}
+    //******** EVENTS ***************/
+    function onDisconnect(){
+        console.log("Player disconnect");
+    }
 
-//************END EVENTS***********//
+    function onRegisterPlayer(data,callback){
+        console.log('Player connected: '+data);
+        listPlayers.push("player_"+data);
+        callback('OK');
+        socket.broadcast.emit('player_registered', data);
+    };
 
+    function onStartGame (data) {
+        console.log('Game Started');
+        socket.broadcast.emit('start_game_players', data);
+    };
+
+     function onReduceTimePLayers(data){
+        console.log("ReduceTimeFrom: "+data);
+        socket.broadcast.emit("reduce_time_players",data.player,data.time);
+    };
+    //************END EVENTS***********//
+
+};
 
 module.exports = {
-  setSocket,
-  onDisconnect,
-  onRegisterPlayer,
-  onStartGame,
-  onReduceTimePLayers
+  socketManager
 }

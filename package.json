@@ -4,7 +4,7 @@
   "description": "Servidor para juego de tesis de Hamilton Urbano y Diana Samboni",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
     "express": "^4.14.0",
     "jade": "^1.11.0",
     "socket.io": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
