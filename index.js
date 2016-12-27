@@ -14,7 +14,6 @@ app.get('/', function(req, res){
     res.render('index',{pageTitle:"Tesis :D"});
 });
 
-
 io.on('connection', events.socketManager);
 
 http.listen(3000, function(){

@@ -24,6 +24,7 @@ var socketManager = function(socket){
         socket.broadcast.emit('player_registered', data);
     };
 
+
     function onStartGame (data) {
         console.log('Game Started');
         socket.broadcast.emit('start_game_players', data);
@@ -34,7 +35,6 @@ var socketManager = function(socket){
          socket.broadcast.emit("reduce_time_players",data);
     };
     //************END EVENTS***********//
-
 };
 
 module.exports = {
