@@ -1,8 +1,7 @@
-var listPlayers = [];
-var listIds = [];
-
 
 var socketManager = function(socket){
+    var listIds = [];
+    var listPlayers = [];
 
     listIds.push(socket.id);
     console.log(listIds);
@@ -11,10 +10,11 @@ var socketManager = function(socket){
     socket.on('disconnect',onDisconnect);
     socket.on('register_player',onRegisterPlayer);
     socket.on('start_game', onStartGame);
+    socket.on('reduce_time_players',onReduceTimePLayers);
 
     //******** EVENTS ***************/
-    function onDisconnect(){
-        console.log("Player disconnect");
+    function onDisconnect(data){
+        console.log("Player disconnect: "+data);
     }
 
     function onRegisterPlayer(data,callback){
@@ -30,8 +30,8 @@ var socketManager = function(socket){
     };
 
      function onReduceTimePLayers(data){
-        console.log("ReduceTimeFrom: "+data);
-        socket.broadcast.emit("reduce_time_players",data.player,data.time);
+         console.log("ReduceTimeFrom: "+data);
+         socket.broadcast.emit("reduce_time_players",data);
     };
     //************END EVENTS***********//
 
