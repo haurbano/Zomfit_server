@@ -2,13 +2,14 @@ $(document).ready(function() {
   var socket = io();
   console.log('Page loaded');
   //When a player is registered
-  socket.on('player_registered', function(msg){
-    $('#players').append($('<li>').text(msg));
+  socket.on('player_registered', function(data){
+    $('#players').append($('<li>').text('Player: '+data.name + ' keys: '+ data.keysG));
   });
 
   //Start Game
   $("#btn_start_game").click(function() {
-    socket.emit('start_game', "start game");
+    var time = $('#input_time').val();
+    socket.emit('start_game', time);
     return false;
   });
 

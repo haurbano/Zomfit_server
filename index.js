@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/static'));
 
 
 app.get('/', function(req, res){
-    res.render('index',{pageTitle:"Tesis :D"});
+    res.render('index',{pageTitle:"Tesis :D", players: events.players});
 });
 
 io.on('connection', events.socketManager);
