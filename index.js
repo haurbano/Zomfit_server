@@ -28,10 +28,14 @@ app.get('/auth/fitbit',
   passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile'] }
 ));
 
-app.get( '/auth/fitbit/callback', passport.authenticate( 'fitbit', {
-        successRedirect: '/success',
-        failureRedirect: '/failure'
-}));
+//app.get( '/auth/fitbit/callback', passport.authenticate( 'fitbit', {
+//        successRedirect: '/success',
+//        failureRedirect: '/failure'
+//}));
+
+app.get( '/auth/fitbit/callback',function(req,res){
+  res.send('code: '+req.query.code);
+});
 
 app.get('/', function(req, res){
     res.render('index',{pageTitle:"Tesis :D", players: events.players});
