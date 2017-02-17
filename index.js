@@ -10,7 +10,7 @@ var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
 passport.use(new FitbitStrategy({
     clientID:     "2284L5",
     clientSecret: "da0c45dcf15e8308d6c56e91df9a8648",
-    callbackURL: "http://mifuturoya.com/auth/fitbit/callback"
+    callbackURL: "http://www.mifuturoya.com/auth/fitbit/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate({ fitbitId: profile.id }, function (err, user) {
@@ -38,7 +38,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/success',function(req,res){
-    res.send('succes');
+    res.send('succes '+req);
 });
 
 app.get('/failure', function(req,res){
