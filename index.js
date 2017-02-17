@@ -10,7 +10,7 @@ var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
 passport.use(new FitbitStrategy({
     clientID:     "2284L5",
     clientSecret: "da0c45dcf15e8308d6c56e91df9a8648",
-    callbackURL: "http://www.mifuturoya.com/auth/fitbit/callback"
+    callbackURL: "http://54.187.11.142:3000/auth/fitbit/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate({ fitbitId: profile.id }, function (err, user) {
@@ -33,9 +33,10 @@ app.get('/auth/fitbit',
 //        failureRedirect: '/failure'
 //}));
 
-app.get( '/auth/fitbit/callback',function(req,res){
-  res.send('code: '+req.query.code);
-});
+app.get( '/auth/fitbit/callback',passport.authenticate( 'fitbit', {
+        successRedirect: '/success',
+        failureRedirect: '/failure'
+}));
 
 app.get('/', function(req, res){
     res.render('index',{pageTitle:"Tesis :D", players: events.players});
