@@ -3,9 +3,9 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var events = require('./events.js')
+var events = require('./events.js');
 var passport = require('passport');
-var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
+var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 
 passport.use(new FitbitStrategy({
     clientID:     "2284L5",
@@ -24,22 +24,22 @@ app.set('views', __dirname + '/static/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/static'));
 
-app.get('/auth/fitbit',
-  passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile'] }
-));
+// app.get('/auth/fitbit',
+//   passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile'] }
+// ));
 
 //app.get( '/auth/fitbit/callback', passport.authenticate( 'fitbit', {
 //        successRedirect: '/success',
 //        failureRedirect: '/failure'
 //}));
 
-app.get( '/auth/fitbit/callback',passport.authenticate( 'fitbit', {
-        successRedirect: '/success',
-        failureRedirect: '/failure'
-}));
+// app.get( '/auth/fitbit/callback',passport.authenticate( 'fitbit', {
+//         successRedirect: '/success',
+//         failureRedirect: '/failure'
+// }));
 
 app.get('/', function(req, res){
-    res.render('index',{pageTitle:"Tesis :D", players: events.players});
+    res.render('index',{pageTitle:"Zomfit", players: events.players});
 });
 
 app.get('/success',function(req,res){

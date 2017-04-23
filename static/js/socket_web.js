@@ -6,6 +6,10 @@ $(document).ready(function() {
     $('#players').append($('<li>').text('Player: '+data.name + ' keys: '+ data.keysG));
   });
 
+  // $('#players').append($('<li>').text('Player: Juanpa' + ' keys: 0'));
+  // $('#players').append($('<li>').text('Player: Haurbano' + ' keys: 0'));
+  // $('#players').append($('<li>').text('Player: DianaM' + ' keys: 0'));
+
   //Start Game
   $("#btn_start_game").click(function() {
     var time = $('#input_time').val();
