@@ -8,6 +8,7 @@ var socketManager = function(socket){
     socket.on('reduce_time_players',onReduceTimePLayers);
     socket.on('remove_enemy_key',onRemoveKey);
     socket.on('win_game',onWinGame);
+    socket.on('player_exit',onExitPlayer);
 
     //******** EVENTS ***************/
 
@@ -48,6 +49,11 @@ var socketManager = function(socket){
      function onWinGame(data){
        console.log("****END GAME****"+data);
        socket.broadcast.emit("end_game",data)
+     }
+
+     function onExitPlayer(data){
+       console.log("Player leave game "+ data);
+       socket.broadcast.emit("player_leave_game",JSON.stringify(data));
      }
      //endregion
 
