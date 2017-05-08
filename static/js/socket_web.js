@@ -6,6 +6,15 @@ $(document).ready(function() {
     $('#players').append($('<li>').text('Player: '+data.name + ' keys: '+ data.keysG));
   });
 
+  socket.on('enemy_found_key',function(data){
+    socket.emit("get_players","data",function(data){
+      $("#players").empty();
+      for(i=0;data.length;i++){
+        $('#players').append($('<li>').text('Player: '+data[i].name + ' keys: '+ data[i].keys));
+      }
+    });
+  });
+
   // $('#players').append($('<li>').text('Player: Juanpa' + ' keys: 0'));
   // $('#players').append($('<li>').text('Player: Haurbano' + ' keys: 0'));
   // $('#players').append($('<li>').text('Player: DianaM' + ' keys: 0'));

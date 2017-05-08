@@ -14,14 +14,6 @@ app.get('/', function(req, res){
     res.render('index',{pageTitle:"Zomfit", players: events.players});
 });
 
-app.get('/success',function(req,res){
-    res.send('succes '+req);
-});
-
-app.get('/failure', function(req,res){
-    res.send('failure');
-});
-
 io.on('connection', events.socketManager);
 
 http.listen(3000, function(){

@@ -1,5 +1,6 @@
 
-players = [];
+var Datastore = require('nedb'), db = new Datastore();
+
 var socketManager = function(socket){
     console.log('Socket connected');
     socket.on('disconnect',onDisconnect);
@@ -9,6 +10,10 @@ var socketManager = function(socket){
     socket.on('remove_enemy_key',onRemoveKey);
     socket.on('win_game',onWinGame);
     socket.on('player_exit',onExitPlayer);
+    socket.on('test_connection',onTestConection);
+    socket.on('found all keys',onAllkeysFound);
+    socket.on('found_1_key',onKeyFound);
+    socket.on('get_players',getPlayers)
 
     //******** EVENTS ***************/
 
@@ -23,17 +28,23 @@ var socketManager = function(socket){
         info = {"name": data, "keysG": 0 };
         socket.broadcast.emit('player_registered', info);
 
-        var player = {};
-        player.name = data;
-        player.keys = 0;
+        var player = {name: data, keys: 0};
 
-        players.push(player);
+        db.insert(player, function(err, newPlayer){
+          if (err) {
+            console.log("****************************");
+            console.log("error when save player`"+err);
+          }else {
+            console.log("****************************");
+            console.log("player saved: "+JSON.stringify(newPlayer));
+          }
+        });
 
     }
 
     function onStartGame (data) {
         console.log('Game Started');
-        socket.broadcast.emit('start_game_players',players, data);
+        socket.broadcast.emit('start_game_players', data);
     }
 
      function onReduceTimePLayers(data){
@@ -55,11 +66,35 @@ var socketManager = function(socket){
        console.log("Player leave game "+ data);
        socket.broadcast.emit("player_leave_game",JSON.stringify(data));
      }
+
+     function onTestConection(data,callback) {
+       callback("ok");
+     }
+
+     function onAllkeysFound(data){
+       socket.broadcast.emit("found all keys",data);
+     }
+
+     function onKeyFound(data){
+       var obj = JSON.parse(data);
+       db.update({name:obj.sender},{name: obj.sender,keys:obj.keys}, function(err,docs){
+         console.log("err update: "+err);
+         console.log("update docs: "+docs);
+       });
+       socket.broadcast.emit("enemy_found_key",data);
+     }
+
+     function getPlayers(data, callback) {
+       var callback1 = callback;
+       db.find({}, function(err,players){
+         callback1(players);
+       });
+     }
      //endregion
 
     //************END EVENTS***********//
 };
 
 module.exports = {
-  socketManager, players
+  socketManager
 }
