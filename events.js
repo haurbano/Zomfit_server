@@ -53,8 +53,22 @@ var socketManager = function(socket){
     }
 
      function onRemoveKey(data) {
-         console.log("key removed: "+data);
-         socket.broadcast.emit("romove_key",data);
+       var obj = JSON.parse(data);
+       console.log("key sender removed: "+obj.player);
+        db.find({name: obj.player}, function(err, data1){
+          console.log("data for remove key: "+data1);
+          console.log("old keys: "+data1[0].keys);
+          if (data1.length>0) {
+            if (data1[0].keys != 0) {
+              var newNumKeys = data1[0].keys - 1;
+              db.update({name: data1.name},{name: data1.name, keys: newNumKeys},function(err, updateDocs){
+                console.log("Error update: "+err);
+                console.log("Update docs: "+updateDocs);
+                socket.broadcast.emit("romove_key",data);
+              });
+            }
+          }
+        });
      }
 
      function onWinGame(data){
@@ -64,7 +78,7 @@ var socketManager = function(socket){
 
      function onExitPlayer(data){
        console.log("Player leave game "+ data);
-       socket.broadcast.emit("player_leave_game",JSON.stringify(data));
+       socket.broadcast.emit("player_leave_game",data);
      }
 
      function onTestConection(data,callback) {
