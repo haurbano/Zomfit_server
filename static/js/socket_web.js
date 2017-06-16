@@ -4,7 +4,6 @@ $(document).ready(function() {
   //When a player is registered
   socket.on('player_registered', function(data){
     console.log("data web: "+JSON.stringify(data));
-    $("#players").append("Players");
     $('#players').append($('<li>').text('Player: '+data.name + ' keys: '+ data.keysG));
   });
 

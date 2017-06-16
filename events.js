@@ -3,17 +3,17 @@ var Datastore = require('nedb'), db = new Datastore();
 
 var socketManager = function(socket){
     console.log('Socket connected');
-    socket.on('disconnect',onDisconnect);
-    socket.on('register_player',onRegisterPlayer);
-    socket.on('start_game', onStartGame);
-    socket.on('reduce_time_players',onReduceTimePLayers);
-    socket.on('remove_enemy_key',onRemoveKey);
-    socket.on('win_game',onWinGame);
-    socket.on('player_exit',onExitPlayer);
-    socket.on('test_connection',onTestConection);
-    socket.on('found all keys',onAllkeysFound);
-    socket.on('found_1_key',onKeyFound);
-    socket.on('get_players',getPlayers)
+    socket.on('disconnect',onDisconnect); //taked
+    socket.on('register_player',onRegisterPlayer); //taked
+    socket.on('start_game', onStartGame);//taked
+    socket.on('reduce_time_players',onReduceTimePLayers);//taked
+    socket.on('remove_enemy_key',onRemoveKey);//taked
+    socket.on('win_game',onWinGame); //taked
+    socket.on('player_exit',onExitPlayer); //taked
+    socket.on('test_connection',onTestConection); //taked
+    socket.on('found all keys',onAllkeysFound); //taked
+    socket.on('found_1_key',onKeyFound); //taked
+    socket.on('get_players',getPlayers) //taked
 
     //******** EVENTS ***************/
 
@@ -56,12 +56,13 @@ var socketManager = function(socket){
        var obj = JSON.parse(data);
        console.log("key sender removed: "+obj.player);
         db.find({name: obj.player}, function(err, data1){
-          console.log("data for remove key: "+data1);
-          console.log("old keys: "+data1[0].keys);
+          console.log( "data for remove key: "+JSON.stringify(data1) );
+          console.log("old keys and name: "+data1[0].keys +" "+data1[0].name);
           if (data1.length>0) {
             if (data1[0].keys != 0) {
               var newNumKeys = data1[0].keys - 1;
-              db.update({name: data1.name},{name: data1.name, keys: newNumKeys},function(err, updateDocs){
+              console.log("New keys: "+newNumKeys);
+              db.update({name: data1[0].name},{name: data1[0].name, keys: newNumKeys},function(err, updateDocs){
                 console.log("Error update: "+err);
                 console.log("Update docs: "+updateDocs);
                 socket.broadcast.emit("romove_key",data);
@@ -86,6 +87,11 @@ var socketManager = function(socket){
      }
 
      function onAllkeysFound(data){
+       var obj = JSON.parse(data);
+       db.update({name:obj.sender},{name: obj.sender,keys:obj.keys}, function(err,docs){
+         console.log("err update: "+err);
+         console.log("update docs: "+docs);
+       });
        socket.broadcast.emit("found all keys",data);
      }
 

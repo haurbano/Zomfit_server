@@ -2,7 +2,8 @@ doctype html
 html(lang="en")
     head
         title= pageTitle
-        link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css', rel='stylesheet')
+        //- link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css', rel='stylesheet')
+        link(href='../css/materialize.min.css', rel='stylesheet')
         link(href='../css/style.css', rel='stylesheet')
     body.body
         h1.main-title Panel de control Zomfit
@@ -17,7 +18,9 @@ html(lang="en")
             label Time
             input#input_time
 
-        script(src="https://cdn.socket.io/socket.io-1.2.0.js")
-        script(src="http://code.jquery.com/jquery-1.11.1.js")
-        script("https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js")
+        //- script(src="https://cdn.socket.io/socket.io-1.2.0.js")
+        script(type="text/javascript" src="../js/socket.io-1.2.0.js")
+        //- script(src="http://code.jquery.com/jquery-1.11.1.js")
+        script(type="text/javascript" src="../js/jquery-1.11.1.js")
+        script(type="text/javascript" src="../js/materialize.min.js")
         script(type="text/javascript" src="../js/socket_web.js")
